@@ -1,5 +1,4 @@
-from sqlalchemy import Integer, String, Column, create_engine, DateTime, Date, select, func, update, delete
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from models.models import Base
 
 engine = create_async_engine(

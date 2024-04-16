@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 
 # Импортируем объект router из файла user.py, competitions.py, result.py
 from routes.user import router as user_router

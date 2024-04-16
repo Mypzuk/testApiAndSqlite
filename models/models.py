@@ -2,8 +2,8 @@ from sqlalchemy import (
     Integer, String, Text, DateTime, Date,
     ForeignKey, func
 )
-from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase, registry, Mapped, mapped_column, relationship
-from sqlalchemy import Integer, String, Column, create_engine, DateTime, Date, select, func, update, delete
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy import Integer, String, DateTime, Date, func
 
 
 class Base(DeclarativeBase):
