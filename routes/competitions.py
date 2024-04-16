@@ -24,7 +24,7 @@ async def add_competition(competition: CompetitionBase, db: AsyncSession = Depen
         return {"error": f"Произошла ошибка при добавлении: {str(e)}"}
 
 
-@router.post('/deleteCompetition')
+@router.delete('/deleteCompetition')
 async def delete_competition(competition_id: int, db: AsyncSession = Depends(get_db)):
     try:
         del_from_competitions = delete(Competitions).where(
