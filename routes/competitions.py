@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends
 
 from engine import get_db
 
-from models.ObjectClass import CompetitionBase
-from models.models import Competitions
+from models.ObjectClass import CompetitionBase, ResultsBase
+from models.models import Competitions, Results
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, delete
@@ -24,22 +24,29 @@ async def add_competition(competition: CompetitionBase, db: AsyncSession = Depen
         return {"error": f"Произошла ошибка при добавлении: {str(e)}"}
 
 
+
+# Удаление определённого соревнования
 @router.delete('/deleteCompetition')
 async def delete_competition(competition_id: int, db: AsyncSession = Depends(get_db)):
     try:
+        competition = await db.execute(select(Competitions).where(Competitions.competition_id == competition_id))
+        checkCompetition = competition.scalar()
+        if checkCompetition is None:
+            return "Такого соревнования нет"
+
         del_from_competitions = delete(Competitions).where(
             Competitions.competition_id == competition_id)
-        # del_from_results = delete(Results).where(Results.competition_id == competition_id)
+        del_from_results2 = delete(Results).where(
+            Results.competition_id == competition_id)
         await db.execute(del_from_competitions)
-        # await session.execute(del_from_results)
+        await db.execute(del_from_results2)
         await db.commit()
         return "Соревнование удалено :3"
     except Exception as e:
         return {"error": f"Произошла ошибка при удалении: {str(e)}"}
 
+
 # Изменение определённого соревнования
-
-
 @router.put('/editCompetition')
 async def edit_competition(competition_id: int, competition: CompetitionBase, db: AsyncSession = Depends(get_db)):
     try:
@@ -51,9 +58,8 @@ async def edit_competition(competition_id: int, competition: CompetitionBase, db
     except Exception as e:
         return {"error": f"Произошла ошибка при обновлении: {str(e)}"}
 
+
 # Выборка id первого соревнования в БД
-
-
 @router.get('/getFirstId')
 async def get_first_id(db: AsyncSession = Depends(get_db)):
     try:
@@ -63,9 +69,8 @@ async def get_first_id(db: AsyncSession = Depends(get_db)):
     except Exception as e:
         return {"error": f"Произошла ошибка при обновлении: {str(e)}"}
 
+
 # Выборка определённого соревнования
-
-
 @router.get('/getCompetition')
 async def get_competition(competition_id: int, db: AsyncSession = Depends(get_db)):
     try:
@@ -76,9 +81,8 @@ async def get_competition(competition_id: int, db: AsyncSession = Depends(get_db
     except Exception as e:
         return {"error": f"Произошла ошибка при обновлении: {str(e)}"}
 
+
 # Выборка всех соревнований
-
-
 @router.get('/getAllCompetition')
 async def get_all_competition(db: AsyncSession = Depends(get_db)):
     try:

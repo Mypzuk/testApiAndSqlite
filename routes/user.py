@@ -4,8 +4,8 @@ from engine import get_db
 
 from datetime import date
 
-from models.ObjectClass import UserBase
-from models.models import Users
+from models.ObjectClass import UserBase, ResultsBase
+from models.models import Users, Results
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, delete
@@ -61,9 +61,20 @@ async def update_birth_date(telegram_id: int, new_birth_date: date, db: AsyncSes
 @router.delete('/deleteUser')
 async def delete_user(telegram_id: int, db: AsyncSession = Depends(get_db)):
     try:
+
+        checkUser = await db.execute(select(Users).where(Users.telegram_id == telegram_id))
+        user_id = checkUser.scalar()
+        if user_id is None:
+            return "Такого пользователя нет"
+
         query = delete(Users).where(Users.telegram_id == telegram_id)
+        del_from_results = delete(Results).where(
+            Results.telegram_id == telegram_id)
+
         await db.execute(query)
+        await db.execute(del_from_results)
         await db.commit()
+
         return "Пользователь успешно удалён!"
     except Exception as e:
         return {"error": f"Произошла ошибка при удалении: {str(e)}"}
@@ -78,4 +89,4 @@ async def check_user(telegram_id: int, db: AsyncSession = Depends(get_db)):
             return False
         return True
     except Exception as e:
-        return {"error": f"Произошла ошибка при удалении: {str(e)}"}
+        return {"error": f"Произошла ошибка при выборе: {str(e)}"}
