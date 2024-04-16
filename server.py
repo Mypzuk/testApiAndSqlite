@@ -1,8 +1,5 @@
 from fastapi import FastAPI, Depends
-from pydantic import BaseModel
-from datetime import date
-from models.models import Users, Base
-import engine
+
 # Импортируем объект router из файла user.py, competitions.py, result.py
 from routes.user import router as user_router
 from routes.competitions import router as competitions_router
