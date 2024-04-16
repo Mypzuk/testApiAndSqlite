@@ -8,7 +8,7 @@ from models.ObjectClass import UserBase
 from models.models import Users
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import ForeignKey, Integer, Text, String, Column, create_engine, DateTime, Date, select, func, update, delete
+from sqlalchemy import select, update, delete
 
 
 router = APIRouter()

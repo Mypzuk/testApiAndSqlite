@@ -1,4 +1,3 @@
-from routes.user import add_user
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from datetime import date
@@ -6,10 +5,16 @@ from models.models import Users, Base
 import engine
 # Импортируем объект router из файла user.py
 from routes.user import router as user_router
+from routes.competitions import router as competitions_router
+from routes.results import router as result_router
+
 
 app = FastAPI()
 
 app.include_router(user_router)  # Подключаем router к основному приложению
+app.include_router(competitions_router)
+app.include_router(result_router)
+
 
 # from sqlalchemy import Integer, String, Column, create_engine, DateTime, Date, select, func, update, delete
 # from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
