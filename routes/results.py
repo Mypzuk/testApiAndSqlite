@@ -160,7 +160,7 @@ async def check_status(competition_id: int, telegram_id: int, db: AsyncSession =
 
 
 # Фильтрация результатов соревнования по count от большего к меньшему
-@router.get('/raitingUsers')
+@router.get('/ratingUsers')
 async def rating_users(competition_id: int, db: AsyncSession = Depends(get_db)):
     try:
         query = select(Results).where(Results.competition_id == competition_id).filter(
@@ -172,7 +172,7 @@ async def rating_users(competition_id: int, db: AsyncSession = Depends(get_db)):
 
 
 # Глобальный рейтинг по всем пользователям.
-@router.get('/totalRaitingUsers')
+@router.get('/totalRatingUsers')
 async def total_rating_users(db: AsyncSession = Depends(get_db)):
     try:
         query = select(Results.telegram_id, func.sum(Results.count).label('total_count')).filter(Results.status.isnot(
