@@ -49,6 +49,11 @@ async def get_users(db: AsyncSession = Depends(get_db)):
 @router.put('/updateBirthDate')
 async def update_birth_date(telegram_id: int, new_birth_date: date, db: AsyncSession = Depends(get_db)):
     try:
+        checkUser = await db.execute(select(Users).where(Users.telegram_id == telegram_id))
+        user_id = checkUser.scalar()
+        if user_id is None:
+            return "Такого пользователя нет"
+
         query = update(Users).where(Users.telegram_id ==
                                     telegram_id).values(birth_date=new_birth_date)
         await db.execute(query)
