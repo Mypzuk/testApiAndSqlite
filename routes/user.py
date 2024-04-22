@@ -95,3 +95,5 @@ async def check_user(telegram_id: int, db: AsyncSession = Depends(get_db)):
         return True
     except Exception as e:
         return {"error": f"Произошла ошибка при выборе: {str(e)}"}
+
+# 'fejufeujfjeuhfnefj'
