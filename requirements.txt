@@ -13,3 +13,6 @@ SQLAlchemy==2.0.29
 starlette==0.37.2
 typing_extensions==4.11.0
 uvicorn==0.29.0
+opencv-python==4.9.0.80
+mediapipe==0.10.11
+python-multipart==0.0.9
